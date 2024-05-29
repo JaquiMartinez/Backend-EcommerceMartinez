@@ -4,11 +4,11 @@ const ProductManager = require('../ProductManager'); /* Importa la clase */
 
 /*Datos de los productos*/
 const initialProducts = [
-    {id: 1, nombre:'Zapatillas Puma MambaNegra', descripcion: 'Es de contrucción de una pieza única en textil con piezas laterales en plástico y un elastico para mayor soporte.', codigo: '0a', precio:41.895, status: true, stock:15, thumbnails:a},
-    {id: 2, nombre:'Zapatillas Adidas Racer TR1', descripcion: 'Movete con confianza a lo largo del día con un comodo ajuste ceñido y una media suela ligera que brinda amortiguación durante todo el día.', codigo: '1b', precio:69.999, status: false, stock:15, thumbnails:a},
-    {id: 3, nombre:'Zapatillas Jhon Foos', descripcion: 'Calzado ideal para desarrollar todas tus actividades urbanas.', codigo: '2c', precio:69.859, status: true , stock:15, thumbnails:a},
-    {id: 4, nombre:'Zapatillas Nike Air Max', descripcion: 'Originalmente diseñada para el running de alto rendimiento, la amortiguación Max Air brinda comodidad comprobada.', codigo: '3d', precio:169.999, status: false, stock:15, thumbnails:a},
-    {id: 5, nombre:'Zapatillas Puma X-Ray', descripcion: 'Tecnología Soft Foam en la plantilla que permite una pisada confortable y adaptable a tu pie', codigo: '4e', precio:69.999, status: true, stock: 15, thumbnails:a},
+    {id: 1, nombre:'Zapatillas Puma MambaNegra', descripcion: 'Es de contrucción de una pieza única en textil con piezas laterales en plástico y un elastico para mayor soporte.', codigo: '0a', precio:41.895, status: true, stock:15, thumbnails: '../images/PumaMambaNegra.jpg'},
+    {id: 2, nombre:'Zapatillas Adidas Racer TR1', descripcion: 'Movete con confianza a lo largo del día con un comodo ajuste ceñido y una media suela ligera que brinda amortiguación durante todo el día.', codigo: '1b', precio:69.999, status: false, stock:15, thumbnails: '../images/Racer-TR21Negra.jpg'},
+    {id: 3, nombre:'Zapatillas Jhon Foos', descripcion: 'Calzado ideal para desarrollar todas tus actividades urbanas.', codigo: '2c', precio:69.859, status: true , stock:15, thumbnails: '../images/ZapatillasJhonFoos.jpg'},
+    {id: 4, nombre:'Zapatillas Nike Air Max', descripcion: 'Originalmente diseñada para el running de alto rendimiento, la amortiguación Max Air brinda comodidad comprobada.', codigo: '3d', precio:169.999, status: false, stock:15, thumbnails: '../images/Nike-Air-Max.jpg'},
+    {id: 5, nombre:'Zapatillas Puma X-Ray', descripcion: 'Tecnología Soft Foam en la plantilla que permite una pisada confortable y adaptable a tu pie', codigo: '4e', precio:69.999, status: true, stock: 15, thumbnails: '../images/Puma-X-Ray.jpg'},
 ];
 
 /* Crea una instancia de ProductManager con datos iniciales*/
