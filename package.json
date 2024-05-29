@@ -1,0 +1,15 @@
+{
+  "name": "backend-ecommerce-martinez",
+  "version": "1.0.0",
+  "description": "Se realiza el backend de ecommerce de zapatillas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jaqueline Martinez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "lodash": "^4.17.21"
+  }
+}
