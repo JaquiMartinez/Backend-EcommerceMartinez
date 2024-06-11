@@ -1,0 +1,57 @@
+{{!< main}}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Productos en Tiempo Real</title>
+</head>
+<body>
+    <h1>Zapatillas</h1>
+    <ul id="product-list"></ul>
+    <form id="addProductForm">
+        <input type="text" id="title" placeholder="Título" required>
+        <input type="text" id="description" placeholder="Descripción" required>
+        <input type="text" id="code" placeholder="Código" required>
+        <input type="number" id="price" placeholder="Precio" required>
+        <input type="checkbox" id="status"> Disponible
+        <input type="number" id="stock" placeholder="Stock" required>
+        <button type="submit">Agregar Producto</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+
+            socket.on('updateProducts', (products) => {
+                const productContainer = document.getElementById('product-list');
+                productContainer.innerHTML = '';
+                products.forEach(product => {
+                    const productElement = document.createElement('li');
+                    productElement.innerHTML = `${product.title} - ${product.description} - $${product.price} 
+                        <button onclick="deleteProduct(${product.id})">Eliminar</button>`;
+                    productContainer.appendChild(productElement);
+                });
+            });
+
+            document.getElementById('addProductForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+                const code = document.getElementById('code').value;
+                const price = document.getElementById('price').value;
+                const status = document.getElementById('status').checked;
+                const stock = document.getElementById('stock').value;
+
+                socket.emit('addProduct', { title, description, code, price, status, stock });
+            });
+        });
+
+        function deleteProduct(id) {
+            const socket = io();
+            socket.emit('deleteProduct', id);
+        }
+    </script>
+</body>
+</html>
+

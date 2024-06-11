@@ -1,0 +1,23 @@
+{{!< main}}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Productos</title>
+</head>
+<body>
+    <h1>Zapatillas</h1>
+    <ul>
+        {{#each products}}
+        <li>{{this.title}} - {{this.description}} - ${{this.price}} - {{this.code}} <button onclick="deleteProduct('{{this.id}}')">Eliminar</button></li>
+        {{/each}}
+    </ul>
+<script src="/socket.io/socket.io.js"></script>
+    <script>
+        function deleteProduct(id) {
+            const socket = io();
+            socket.emit('deleteProduct', id);
+        }
+    </script>
+</body>
+</html>

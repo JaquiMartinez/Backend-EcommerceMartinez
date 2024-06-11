@@ -1,4 +1,3 @@
-// CartManager.js
 class CartManager {
     constructor() {
         this.carts = [];
