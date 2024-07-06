@@ -1,6 +1,6 @@
 const express = require ('express');
 const router = express.Router();
-const ProductManager = require('../ProductManager'); /* Importa la clase */
+const ProductManager = require('../dao/fileSystem/ProductManager'); /* Importa la clase */
 
 /*Datos de los productos*/
 const initialProducts = [
@@ -9,6 +9,11 @@ const initialProducts = [
     {id: 3, nombre:'Zapatillas Jhon Foos', descripcion: 'Calzado ideal para desarrollar todas tus actividades urbanas.', codigo: '2c', precio:69.859, status: true , stock:15, thumbnails: '../images/ZapatillasJhonFoos.jpg'},
     {id: 4, nombre:'Zapatillas Nike Air Max', descripcion: 'Originalmente diseñada para el running de alto rendimiento, la amortiguación Max Air brinda comodidad comprobada.', codigo: '3d', precio:169.999, status: false, stock:15, thumbnails: '../images/Nike-Air-Max.jpg'},
     {id: 5, nombre:'Zapatillas Puma X-Ray', descripcion: 'Tecnología Soft Foam en la plantilla que permite una pisada confortable y adaptable a tu pie', codigo: '4e', precio:69.999, status: true, stock: 15, thumbnails: '../images/Puma-X-Ray.jpg'},
+    {id: 6, nombre:'Zapatillas Vans Clasicas', descripcion: 'Zapatillas comodas para uso diario', codigo: '5f', precio:69.999, status: true, stock: 15, thumbnails: '../images/Vans-clasic.jpg'},
+    {id: 7, nombre:'Zapatillas Botas Atomik Flip', descripcion: 'Zapatillas divertidas y comodas para niños', codigo: '6g', precio:59.999, status: true, stock: 15, thumbnails: '../images/Botas-Atomik.jpg'},
+    {id: 8, nombre:'Ojotas Puma Popcat', descripcion: 'Suela de EVA inyectada para mayor suavidad y comodidad.', codigo: '7h', precio:27.999, status: true, stock: 15, thumbnails: '../images/ojotas-puma-popcat.jpg'},
+    {id: 9, nombre:'Medias Puma Caña Alta x3', descripcion: 'Estilo y comodidad con las nuevas medias PUMA. Algodón suave.', codigo: '8i', precio:8.899, status: true, stock: 15, thumbnails: '../images/medias-alta-pack-x3-puma.jpg'},
+    {id: 10, nombre:'Medias de Futbol Adidas', descripcion: 'Su tejido con tecnología Aeroready garantiza un ajuste perfecto y alta performance en la cancha.', codigo: '9j', precio:9.599, status: true, stock: 15, thumbnails: '../images/medias-futbol-adidas.jpg'},
 ];
 
 /* Crea una instancia de ProductManager con datos iniciales*/
