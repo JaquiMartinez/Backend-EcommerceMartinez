@@ -33,14 +33,14 @@ console.log (`Server is running on port ${PORT}`);
 
 \-Siguiendo el proyecto de backend simulado para un comercio de zapatillas se utiliza tecnologías modernas y prácticas de desarrollo seguras. A continuación se describen las características, tecnologías utilizadas y las instrucciones para configurar y ejecutar el proyecto.
 
-## Tecnologías Utilizadas en esta ocasión
+### Tecnologías Utilizadas en esta ocasión
 
 *   Passport: Middleware de autenticación para Node.js.
 *   JWT (JSON Web Tokens): Estándar para el manejo de tokens de autenticación.
 *   bcrypt: Biblioteca para el hash de contraseñas.
 *   dotenv: Gestión de variables de entorno.
 
-## Características
+### Características
 
 *   Autenticación de Usuarios: Implementa autenticación utilizando JWT.
 *   Gestión de Productos y Carritos: Rutas para manejar productos y carritos, con almacenamiento en MongoDB.
