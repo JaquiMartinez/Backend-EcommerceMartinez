@@ -9,10 +9,14 @@
   "author": "Jaqueline Martinez",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.2",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.4.5",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "socket.io": "^4.7.5"
   }
 }

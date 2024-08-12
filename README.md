@@ -8,9 +8,13 @@ console.log (`Server is running on port ${PORT}`);
 
 ### Tecnologías implementadas en esta instancia:
 
-*   framework Express.js
-*   motor de plantilla Handlebars
+*   Node.js: Entorno de ejecución para JavaScript en el servidor.
+*   Framework Express.js
+*   Express-handlebars: Motor de plantillas para Express.
 *   biblioteca Socket.IO
+*   Express: Framework para Node.js que facilita la creación de aplicaciones web.
+*   MongoDB: Base de datos NoSQL para almacenar los datos.
+*   Mongoose: ODM (Object Data Modeling) para MongoDB y Node.js.
 
 ### Podrás encontrar:
 
@@ -24,3 +28,21 @@ console.log (`Server is running on port ${PORT}`);
 2.  Instala las dependencias con `npm install`.
 3.  Inicia el servidor con `node index.js`.
 4.  Accede a `http://localhost:8080/products` para ver la lista de productos o `http://localhost:8080/realtimeproducts` para ver la lista de productos en tiempo real.
+
+## Programación Backend II: Desarrollo Avanzado de Backend
+
+\-Siguiendo el proyecto de backend simulado para un comercio de zapatillas se utiliza tecnologías modernas y prácticas de desarrollo seguras. A continuación se describen las características, tecnologías utilizadas y las instrucciones para configurar y ejecutar el proyecto.
+
+## Tecnologías Utilizadas en esta ocasión
+
+*   Passport: Middleware de autenticación para Node.js.
+*   JWT (JSON Web Tokens): Estándar para el manejo de tokens de autenticación.
+*   bcrypt: Biblioteca para el hash de contraseñas.
+*   dotenv: Gestión de variables de entorno.
+
+## Características
+
+*   Autenticación de Usuarios: Implementa autenticación utilizando JWT.
+*   Gestión de Productos y Carritos: Rutas para manejar productos y carritos, con almacenamiento en MongoDB.
+*   Comunicación en Tiempo Real: Uso de Socket.io para actualizaciones en tiempo real.
+*   Rutas de Sesiones: Rutas protegidas para obtener datos del usuario actual.

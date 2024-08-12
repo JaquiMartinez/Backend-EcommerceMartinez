@@ -4,8 +4,9 @@ const { Server } = require('socket.io');
 const { engine } = require('express-handlebars');
 const productsRouter = require('./routes/products');
 const cartsRouter = require('./routes/carts');
+const sessionsRouter = require('./routes/sessions'); /* Importa el router de sesiones */
+const passportConfig = require('./config/passport'); /* Importa la configuración de Passport */
 const ProductManager = require('./dao/db/ProductManager');
-const CartManager = require('./dao/db/CartManager');
 const connectDB = require('./db');
 
 const app = express();
@@ -20,47 +21,39 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
+/* Configuración de Passport */
+passportConfig(require('passport'));
+
 /* Middlewares */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-/* Lista de productos iniciales (esto debería cargarse desde MongoDB en lugar de estar hardcoded) */
-const productManager = new ProductManager();
-
-/* Ruta para la vista de productos */
-app.get('/products', async (req, res) => {
-    const products = await productManager.getProducts();
-    res.render('index', { products });
-});
-
-/* Ruta para la vista de productos en tiempo real */
-app.get('/realtimeproducts', async (req, res) => {
-    const products = await productManager.getProducts();
-    res.render('realTimeProducts', { products });
-});
+app.use(require('cookie-parser')()); /* Asegurar de tener cookie-parser para manejar las cookies */
 
 /* Rutas de API */
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
+app.use('/api/sessions', sessionsRouter); /* Agrega el router de sesiones */
 
 /* Configurar Socket.io */
 io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
 
+    const productManager = new ProductManager();
+
     /* Emite la lista de productos actual al conectar */
-    socket.emit('updateProducts', productManager.getProducts());
+    socket.emit('Actualizar Productos', productManager.getProducts());
 
-    socket.on('addProduct', async (product) => {
+    socket.on('Producto Agregado', async (product) => {
         await productManager.addProduct(product);
-        io.emit('updateProducts', await productManager.getProducts());
+        io.emit('Actualizar Productos', await productManager.getProducts());
     });
 
-    socket.on('deleteProduct', async (id) => {
+    socket.on('Eliminar Producto', async (id) => {
         await productManager.deleteProduct(id);
-        io.emit('updateProducts', await productManager.getProducts());
+        io.emit('Actualizar Productos', await productManager.getProducts());
     });
 
-    socket.on('disconnect', () => {
+    socket.on('Desconectado', () => {
         console.log('Un usuario se ha desconectado');
     });
 });
