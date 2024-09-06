@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const CartManager = require('../dao/db/CartManager');
+const requireAuth = require('../middlewares/authorization.js'); // Importa el middleware
 const cartManager = new CartManager();
 
 let carts = [];

@@ -1,6 +1,7 @@
-const express = require ('express');
+const express = require('express');
 const router = express.Router();
-const ProductManager = require('../dao/fileSystem/ProductManager'); /* Importa la clase */
+const ProductManager = require('../dao/fileSystem/ProductManager'); // Importa la clase
+const requireAuth = require('../middlewares/authorization.js'); // Importa el middleware
 
 /*Datos de los productos*/
 const initialProducts = [
