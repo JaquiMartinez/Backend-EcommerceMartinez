@@ -4,10 +4,11 @@ const { Server } = require('socket.io');
 const { engine } = require('express-handlebars');
 const productsRouter = require('./routes/products');
 const cartsRouter = require('./routes/carts');
-const sessionsRouter = require('./routes/sessions'); /* Importa el router de sesiones */
-const passportConfig = require('./config/passport'); /* Importa la configuración de Passport */
-const ProductManager = require('./dao/db/ProductManager');
+const sessionsRouter = require('./routes/sessions'); // Importa el router de sesiones
+const passportConfig = require('./config/passport'); // Importa la configuración de Passport
+const ProductManager = require('./dao/db/ProductManager.js');
 const connectDB = require('./db');
+const requireAuth = require('./middlewares/authorization.js'); // Importa el middleware de autorización
 
 const app = express();
 const server = createServer(app);
@@ -27,12 +28,12 @@ passportConfig(require('passport'));
 /* Middlewares */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(require('cookie-parser')()); /* Asegurar de tener cookie-parser para manejar las cookies */
+app.use(require('cookie-parser')()); // Asegura de tener cookie-parser para manejar las cookies
 
 /* Rutas de API */
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
-app.use('/api/sessions', sessionsRouter); /* Agrega el router de sesiones */
+app.use('/api/products', requireAuth(['admin']), productsRouter);
+app.use('/api/carts', requireAuth(['user'], 'add_to_cart'), cartsRouter);
+app.use('/api/sessions', sessionsRouter); // Agrega el router de sesiones
 
 /* Configurar Socket.io */
 io.on('connection', (socket) => {
@@ -40,7 +41,7 @@ io.on('connection', (socket) => {
 
     const productManager = new ProductManager();
 
-    /* Emite la lista de productos actual al conectar */
+    // Emite la lista de productos actual al conectar
     socket.emit('Actualizar Productos', productManager.getProducts());
 
     socket.on('Producto Agregado', async (product) => {

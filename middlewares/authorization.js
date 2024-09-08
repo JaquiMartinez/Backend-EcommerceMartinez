@@ -1,34 +1,42 @@
 const jwt = require('jsonwebtoken');
 
-const requireAuth = (roles) => (req, res, next) => {
+const requireAuth = (roles, action = null) => (req, res, next) => {
     try {
-        // Obtener el token desde las cookies o el encabezado Authorization
-        const token = req.cookies.jwt || req.headers.authorization?.split(" ")[1];
-        
+        const token = req.cookies.jwt;
         if (!token) {
             return res.status(401).json({ message: 'No se ha proporcionado un token' });
         }
 
-        // Verificar el token JWT
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        // Verifica y decodifica el token
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                // Diferencia entre los diferentes tipos de errores JWT
+                if (err.name === 'TokenExpiredError') {
+                    return res.status(401).json({ message: 'El token ha expirado, por favor, inicie sesión nuevamente' });
+                } else if (err.name === 'JsonWebTokenError') {
+                    return res.status(401).json({ message: 'Token inválido, no autorizado' });
+                } else {
+                    return res.status(401).json({ message: 'Error de autenticación' });
+                }
+            }
 
-        // Verificación del rol del usuario
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({ message: 'No autorizado: rol insuficiente' });
-        }
+            req.user = decoded;
 
-        // Continúa hacia el siguiente middleware/controlador
-        next();
+            // Verifica el rol
+            if (!roles.includes(req.user.role)) {
+                return res.status(403).json({ message: 'No autorizado' });
+            }
+
+            // Verifica acciones específicas (como agregar a carrito solo para usuarios)
+            if (action === 'add_to_cart' && req.user.role !== 'user') {
+                return res.status(403).json({ message: 'Solo los usuarios pueden agregar productos al carrito' });
+            }
+
+            next();
+        });
+
     } catch (error) {
-        // Verificar si el error es por expiración del token o un error de firma
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({ message: 'El token ha expirado' });
-        } else if (error.name === 'JsonWebTokenError') {
-            return res.status(401).json({ message: 'Token inválido' });
-        } else {
-            return res.status(500).json({ message: 'Error en la autenticación' });
-        }
+        return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 
