@@ -2,10 +2,11 @@ const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { engine } = require('express-handlebars');
-const productsRouter = require('./routes/products');
-const cartsRouter = require('./routes/carts');
-const sessionsRouter = require('./routes/sessions'); // Importa el router de sesiones
-const passportConfig = require('./config/passport'); // Importa la configuración de Passport
+const productsRouter = require('./routes/products.js');
+const cartsRouter = require('./routes/carts.js');
+const sessionsRouter = require('./routes/sessions.js'); // Importa el router de sesiones
+const ticketsRouter = require('./routes/tickets.js'); // Importa el router de tickets
+const passportConfig = require('./config/passport.js'); // Importa la configuración de Passport
 const ProductManager = require('./dao/db/ProductManager.js');
 const connectDB = require('./db');
 const requireAuth = require('./middlewares/authorization.js'); // Importa el middleware de autorización
@@ -34,6 +35,7 @@ app.use(require('cookie-parser')()); // Asegura de tener cookie-parser para mane
 app.use('/api/products', requireAuth(['admin']), productsRouter);
 app.use('/api/carts', requireAuth(['user'], 'add_to_cart'), cartsRouter);
 app.use('/api/sessions', sessionsRouter); // Agrega el router de sesiones
+app.use('/api/tickets', ticketsRouter); // Agrega el router de tickets
 
 /* Configurar Socket.io */
 io.on('connection', (socket) => {
