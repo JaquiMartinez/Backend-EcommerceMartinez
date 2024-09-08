@@ -39,10 +39,15 @@ console.log (`Server is running on port ${PORT}`);
 *   JWT (JSON Web Tokens): Estándar para el manejo de tokens de autenticación.
 *   bcrypt: Biblioteca para el hash de contraseñas.
 *   dotenv: Gestión de variables de entorno.
+*   Mongoose: ODM para MongoDB..
+*   Express-validator: Middleware para validar los datos de entrada.
+*   Cookie-parser: Middleware para manejar cookies.
+*   Socket.IO: Biblioteca para comunicación en tiempo real.
 
 ### Características
 
-*   Autenticación de Usuarios: Implementa autenticación utilizando JWT.
-*   Gestión de Productos y Carritos: Rutas para manejar productos y carritos, con almacenamiento en MongoDB.
+*   Autenticación de Usuarios: Implementa autenticación utilizando JWT y Passport. Los usuarios pueden iniciar sesión, y se aplican roles para controlar el acceso a diferentes rutas.
+*   Gestión de Productos y Carritos: Rutas para manejar productos y carritos, con almacenamiento en MongoDB. Los carritos pueden ser comprados y se genera un ticket para cada compra.
 *   Comunicación en Tiempo Real: Uso de Socket.io para actualizaciones en tiempo real.
 *   Rutas de Sesiones: Rutas protegidas para obtener datos del usuario actual.
+*   Gestión de Tickets: Implementación de un sistema para crear y gestionar tickets para las compras realizadas.
