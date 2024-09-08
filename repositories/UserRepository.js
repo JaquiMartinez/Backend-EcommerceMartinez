@@ -5,12 +5,24 @@ class UserRepository {
         this.userDao = new UserDao();
     }
 
-    async createUser(data) {
-        return await this.userDao.createUser(data);
+    async getUserById(id) {
+        return await this.userDao.findById(id);
     }
 
-    async getUserByEmail(email) {
-        return await this.userDao.getUserByEmail(email);
+    async getAllUsers() {
+        return await this.userDao.findAll();
+    }
+
+    async createUser(user) {
+        return await this.userDao.create(user);
+    }
+
+    async updateUser(id, userUpdates) {
+        return await this.userDao.update(id, userUpdates);
+    }
+
+    async deleteUser(id) {
+        return await this.userDao.delete(id);
     }
 }
 

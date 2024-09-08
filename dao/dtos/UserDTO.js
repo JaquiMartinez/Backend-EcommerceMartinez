@@ -1,12 +1,12 @@
-class UserDTO {
+class UserDto {
     constructor(user) {
-        this.first_name = user.first_name;
-        this.last_name = user.last_name;
+        this.id = user.id;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
         this.email = user.email;
-        this.age = user.age;
-        this.cart = user.cart;
         this.role = user.role;
+        // Incluye solo la información que se desea exponer
     }
 }
 
-module.exports = UserDTO;
+module.exports = UserDto;

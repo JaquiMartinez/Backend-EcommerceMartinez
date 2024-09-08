@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ProductManager = require('../dao/fileSystem/ProductManager'); // Importa la clase
-const requireAuth = require('../middlewares/authorization.js'); // Importa el middleware
+const ProductController = require('../src/Controller/productController.js'); // Importa el controlador
+const requireAuth = require('../middlewares/authorization.js'); // Importa el middleware de autorización
 
 /*Datos de los productos*/
 const initialProducts = [
@@ -16,9 +16,6 @@ const initialProducts = [
     {id: 9, nombre:'Medias Puma Caña Alta x3', descripcion: 'Estilo y comodidad con las nuevas medias PUMA. Algodón suave.', codigo: '8i', precio:8.899, status: true, stock: 15, thumbnails: '../images/medias-alta-pack-x3-puma.jpg'},
     {id: 10, nombre:'Medias de Futbol Adidas', descripcion: 'Su tejido con tecnología Aeroready garantiza un ajuste perfecto y alta performance en la cancha.', codigo: '9j', precio:9.599, status: true, stock: 15, thumbnails: '../images/medias-futbol-adidas.jpg'},
 ];
-
-/* Crea una instancia de ProductManager con datos iniciales*/
-const productManager = new ProductManager(initialProducts);
 
 /* Ruta raíz GET / - Lista todos los productos*/
 router.get('/', (req, res) => {
