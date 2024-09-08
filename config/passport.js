@@ -1,10 +1,13 @@
 const { Strategy, ExtractJwt } = require('passport-jwt');
-const User = require('../dao/models/User'); /* Ruta al modelo de usuario */
+const User = require('../dao/models/User.js'); /* Ruta al modelo de usuario */
 const { JWT_SECRET } = process.env; /* Asegurar de tener la clave secreta en las variables de entorno */
 
 /* Estrategia para verificar el token JWT */
 const jwtStrategy = new Strategy({
-    jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderAsBearerToken(), ExtractJwt.fromExtractors([extractJwtFromCookie])]),
+    jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(), 
+        extractJwtFromCookie
+    ]),
     secretOrKey: JWT_SECRET,
 }, async (jwt_payload, done) => {
     try {
@@ -12,7 +15,7 @@ const jwtStrategy = new Strategy({
         if (user) {
             return done(null, user);
         } else {
-            return done(null, false);
+            return done(null, false, { message: 'Usuario no encontrado' });
         }
     } catch (err) {
         return done(err, false);

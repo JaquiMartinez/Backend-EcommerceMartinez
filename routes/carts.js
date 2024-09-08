@@ -1,101 +1,73 @@
 const express = require('express');
 const router = express.Router();
-const CartManager = require('../dao/db/CartManager.js');
-const ProductManager = require('../dao/db/ProductManager.js');
-const TicketManager = require('../dao/db/TicketManager.js'); // Asegúrate de tener el TicketManager
-const requireAuth = require('../middlewares/authorization.js'); // Importa el middleware
+const CartManager = require('../dao/db/CartManager');
+const ProductManager = require('../dao/db/ProductManager');
+const TicketManager = require('../dao/db/TicketManager'); // Importa el TicketManager
+const requireAuth = require('../middlewares/authorization.js'); // Importa el middleware de autorización
 
 const cartManager = new CartManager();
 const productManager = new ProductManager();
-const ticketManager = new TicketManager(); // Instancia del TicketManager
+const ticketManager = new TicketManager(); // Instancia el TicketManager
 
-/* Ruta raíz POST / - Creación de nuevo carrito */
-router.post('/', (req, res) => {
-    const newCart = cartManager.createCart();
-    res.status(201).json(newCart);
-});
-
-/* Ruta GET /:cid - Lista los productos del carrito con el id proporcionado */
-router.get('/:cid', (req, res) => {
-    const cartId = parseInt(req.params.cid);
-    const cart = cartManager.getCartById(cartId);
-    if (cart.error) {
-        res.status(404).json(cart);
-    } else {
-        res.json(cart);
-    }
-});
-
-/* Ruta POST /:cid/product/:pid - Agrega un producto al carrito */
-router.post('/:cid/product/:pid', (req, res) => {
-    const cartId = parseInt(req.params.cid);
-    const productId = parseInt(req.params.pid);
-    const updatedCart = cartManager.addProductToCart(cartId, productId);
-    if (updatedCart.error) {
-        res.status(404).json(updatedCart);
-    } else {
-        res.json(updatedCart);
-    }
-});
-
-/* Ruta POST /:cid/purchase - Finaliza el proceso de compra del carrito */
-router.post('/:cid/purchase', async (req, res) => {
+// Ruta POST /:cid/purchase - Finaliza el proceso de compra de un carrito
+router.post('/:cid/purchase', requireAuth(['user']), async (req, res) => {
     try {
-        const cartId = parseInt(req.params.cid);
-        const cart = cartManager.getCartById(cartId);
-
-        if (cart.error) {
+        const cartId = req.params.cid;
+        const cart = await cartManager.getCartById(cartId);
+        
+        if (!cart) {
             return res.status(404).json({ message: 'Carrito no encontrado' });
         }
 
-        const productsInCart = cart.products;
-        let productsNotProcessed = [];
+        const productsToBuy = cart.products;
+        const productsNotPurchased = [];
+        const purchasedProducts = [];
         let totalAmount = 0;
-        let purchasedProducts = [];
 
-        for (const item of productsInCart) {
-            const product = await productManager.getProductById(item.productId);
+        for (const item of productsToBuy) {
+            const product = await productManager.getProductById(item.product);
+            
+            if (product) {
+                if (product.stock >= item.quantity) {
+                    // Restar stock del producto
+                    product.stock -= item.quantity;
+                    await product.save();
 
-            if (!product) {
-                productsNotProcessed.push(item.productId);
-                continue;
-            }
-
-            if (product.stock >= item.quantity) {
-                // Restar stock del producto
-                await productManager.updateProductStock(item.productId, product.stock - item.quantity);
-                totalAmount += product.price * item.quantity;
-                purchasedProducts.push(item.productId);
+                    // Agregar al total de la compra
+                    totalAmount += product.price * item.quantity;
+                    
+                    // Marcar como comprado
+                    purchasedProducts.push(item.product);
+                } else {
+                    // Producto con stock insuficiente
+                    productsNotPurchased.push(item.product);
+                }
             } else {
-                productsNotProcessed.push(item.productId);
+                // Producto no encontrado
+                productsNotPurchased.push(item.product);
             }
         }
 
-        // Crear el ticket
-        const newTicket = await ticketManager.createTicket({
-            code: generateUniqueCode(), // Función para generar un código único
-            purchase_datetime: new Date(),
+        // Genera el ticket con los datos de la compra
+        const ticketData = {
             amount: totalAmount,
-            purchaser: req.user.email // El usuario debe estar autenticado y tener un email
-        });
+            purchaser: req.user.email, // Suponiendo que el email del usuario está en req.user
+        };
+        const ticket = await ticketManager.createTicket(ticketData);
 
-        // Actualiza el carrito
-        const updatedCart = cart.products.filter(item => !purchasedProducts.includes(item.productId));
-        await cartManager.updateCart(cartId, updatedCart);
+        // Filtrar el carrito para mantener solo los productos no comprados
+        cart.products = cart.products.filter(item => productsNotPurchased.includes(item.product));
+        await cart.save();
 
         res.status(200).json({
-            ticket: newTicket,
-            productsNotProcessed
+            ticket,
+            productsNotPurchased
         });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al procesar la compra' });
+        console.error('Error finalizando la compra:', error);
+        res.status(500).json({ message: 'Error al finalizar la compra' });
     }
 });
 
 module.exports = router;
-
-/* Función para generar un código único para el ticket */
-function generateUniqueCode() {
-    return 'TICKET-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-}

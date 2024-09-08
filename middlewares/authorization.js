@@ -20,6 +20,7 @@ const requireAuth = (roles, action = null) => (req, res, next) => {
                 }
             }
 
+            // Asegurar de que el decoded tiene los campos necesarios
             req.user = decoded;
 
             // Verifica el rol

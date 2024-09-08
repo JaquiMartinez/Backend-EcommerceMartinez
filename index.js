@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { engine } = require('express-handlebars');
@@ -24,7 +25,9 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 /* Configuración de Passport */
-passportConfig(require('passport'));
+passportConfig(passport); // Pasar passport a la configuración
+
+app.use(passport.initialize()); // Asegura de inicializar Passport
 
 /* Middlewares */
 app.use(express.json());
