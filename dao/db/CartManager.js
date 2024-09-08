@@ -1,4 +1,4 @@
-const Cart = require('../models/Cart');
+const Cart = require('../../dao/models/Cart.js');
 
 class CartManager {
     async createCart() {
@@ -7,7 +7,7 @@ class CartManager {
             await newCart.save();
             return newCart;
         } catch (error) {
-            throw new Error('Error creating cart');
+            throw new Error('Error al crear carrito');
         }
     }
 
@@ -15,14 +15,14 @@ class CartManager {
         try {
             return await Cart.findById(id).populate('products.product');
         } catch (error) {
-            throw new Error('Cart not found');
+            throw new Error('Carrito no encontrado');
         }
     }
 
     async addProductToCart(cartId, productId) {
         try {
             const cart = await Cart.findById(cartId);
-            if (!cart) throw new Error('Cart not found');
+            if (!cart) throw new Error('Carrito no encontrado');
 
             const existingProduct = cart.products.find(p => p.product.toString() === productId);
             if (existingProduct) {
@@ -33,7 +33,7 @@ class CartManager {
             await cart.save();
             return cart;
         } catch (error) {
-            throw new Error('Error adding product to cart');
+            throw new Error('Error al agregar producto al carrito');
         }
     }
 }

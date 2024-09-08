@@ -7,7 +7,7 @@ class ProductManager {
             await newProduct.save();
             return newProduct;
         } catch (error) {
-            throw new Error('Error adding product');
+            throw new Error('Error al agregar producto');
         }
     }
 
@@ -15,7 +15,7 @@ class ProductManager {
         try {
             return await Product.find();
         } catch (error) {
-            throw new Error('Error fetching products');
+            throw new Error('Error al recuperar productos');
         }
     }
 
@@ -23,7 +23,7 @@ class ProductManager {
         try {
             return await Product.findById(id);
         } catch (error) {
-            throw new Error('Product not found');
+            throw new Error('Producto no econtrado');
         }
     }
 
@@ -31,7 +31,7 @@ class ProductManager {
         try {
             return await Product.findByIdAndDelete(id);
         } catch (error) {
-            throw new Error('Error deleting product');
+            throw new Error('Error al eliminar el producto');
         }
     }
 }
