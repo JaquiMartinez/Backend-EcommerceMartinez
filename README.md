@@ -29,6 +29,8 @@ console.log (`Server is running on port ${PORT}`);
 3.  Inicia el servidor con `node index.js`.
 4.  Accede a `http://localhost:8080/products` para ver la lista de productos o `http://localhost:8080/realtimeproducts` para ver la lista de productos en tiempo real.
 
+   
+
 ## Programación Backend II: Diseño y Arquitectura Backend
 
 \-Siguiendo el proyecto de backend simulado para un comercio de zapatillas se utiliza tecnologías modernas y prácticas de desarrollo seguras. A continuación se describen las características, tecnologías utilizadas y las instrucciones para configurar y ejecutar el proyecto.
